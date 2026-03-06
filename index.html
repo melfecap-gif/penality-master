@@ -45,16 +45,13 @@
         <div id="ui-overlay">
             <div id="start-screen" class="overlay-card active">
                 <h1 class="game-title">PENALTY<br>STRIKE 2D</h1>
-                <p class="game-desc">Escolha a dificuldade e mostre sua pontaria!</p>
-                
-                <div class="difficulty-select">
-                    <button class="diff-btn" data-diff="EASY">FÁCIL</button>
-                    <button class="diff-btn active" data-diff="MEDIUM">MÉDIO</button>
-                    <button class="diff-btn" data-diff="HARD">DIFÍCIL</button>
-                    <button class="diff-btn" data-diff="IMP">IMPOSSÍVEL</button>
+                <p class="game-desc">Escolha a dificuldade e mostre sua precisão!</p>
+                <div class="difficulty-grid">
+                    <button class="diff-btn easy" data-level="easy">FÁCIL</button>
+                    <button class="diff-btn medium" data-level="medium">MÉDIO</button>
+                    <button class="diff-btn hard" data-level="hard">DIFÍCIL</button>
+                    <button class="diff-btn impossible" data-level="impossible">IMPOSSÍVEL</button>
                 </div>
-
-                <button id="start-btn" class="main-btn">INICIAR JOGO</button>
             </div>
 
             <div id="goal-message" class="goal-anim">

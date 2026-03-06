@@ -183,39 +183,43 @@ body {
 .game-desc {
     font-size: 16px;
     color: rgba(255,255,255,0.6);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     line-height: 1.6;
 }
 
-.difficulty-select {
+.difficulty-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 30px;
+    gap: 15px;
+    width: 100%;
 }
 
 .diff-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    background: rgba(255,255,255,0.05);
     color: white;
-    padding: 12px;
-    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 13px;
-    transition: all 0.2s ease;
-    letter-spacing: 1px;
+    transition: all 0.3s ease;
 }
 
 .diff-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-3px);
 }
 
-.diff-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(255, 45, 45, 0.4);
-}
+.diff-btn.easy { border-color: #39ff14; color: #39ff14; }
+.diff-btn.medium { border-color: #ffff00; color: #ffff00; }
+.diff-btn.hard { border-color: #ff8c00; color: #ff8c00; }
+.diff-btn.impossible { border-color: #ff2d2d; color: #ff2d2d; }
+
+.diff-btn.easy:hover { background: rgba(57, 255, 20, 0.1); }
+.diff-btn.medium:hover { background: rgba(255, 255, 0, 0.1); }
+.diff-btn.hard:hover { background: rgba(255, 140, 0, 0.1); }
+.diff-btn.impossible:hover { background: rgba(255, 45, 45, 0.1); }
 
 .main-btn {
     background: linear-gradient(135deg, var(--primary), #ff7171);

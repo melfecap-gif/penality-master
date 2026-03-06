@@ -37,13 +37,14 @@ let gameState = 'START'; // START, IDLE, AIMING, SHOOTING, RESULT, GAMEOVER
 let score = { player: 0, keeper: 0 };
 let currentShot = 0;
 let maxShots = 5;
-let currentDifficulty = 'MEDIUM';
+let shotHistory = [];
+let chosenDifficulty = 'medium';
 
-const DIFFICULTIES = {
-    'EASY': { scoreChance: 0.9, keeperMistake: 0.9 },
-    'MEDIUM': { scoreChance: 0.7, keeperMistake: 0.7 },
-    'HARD': { scoreChance: 0.5, keeperMistake: 0.5 },
-    'IMP': { scoreChance: 0.4, keeperMistake: 0.4 }
+const DIFFICULTY_SETTINGS = {
+    easy: { scoreProb: 0.9, keeperSpeed: 1.5 },
+    medium: { scoreProb: 0.7, keeperSpeed: 2.5 },
+    hard: { scoreProb: 0.5, keeperSpeed: 3.5 },
+    impossible: { scoreProb: 0.4, keeperSpeed: 5.0 }
 };
 
 // Assets
@@ -244,8 +245,22 @@ class Keeper {
 
     dive(targetX, targetY) {
         this.state = 'DIVING';
-        this.diveX = targetX;
-        this.diveY = targetY;
+        
+        // Difficulty Logic: Decide if keeper guesses correctly
+        const chance = Math.random();
+        const settings = DIFFICULTY_SETTINGS[chosenDifficulty];
+        
+        if (chance > settings.scoreProb) {
+            // Correct guess
+            this.diveX = targetX;
+            this.diveY = targetY;
+        } else {
+            // Wrong guess - dive to a random position away from the ball
+            const side = Math.random() > 0.5 ? 1 : -1;
+            this.diveX = (canvas.width / 2) + (side * 200);
+            this.diveY = 150 + (Math.random() * 100);
+        }
+        
         this.animTimer = 0;
     }
 }
@@ -498,38 +513,21 @@ window.addEventListener('mouseup', () => {
     
     // Keeper Decision
     setTimeout(() => {
-        const diff = DIFFICULTIES[currentDifficulty];
-        const willMistake = Math.random() < diff.keeperMistake;
-        
-        let targetX, targetZ;
-        
-        if (willMistake) {
-            // Dive wrong way or stay still
-            targetX = (Math.random() > 0.5) ? canvas.width / 2 + 300 : canvas.width / 2 - 300;
-            // Also sometimes dive too high or too low
-            targetZ = Math.random() * 200;
-        } else {
-            // Precise dive
-            targetX = ball.x + ball.vx * 30;
-            targetZ = ball.vz * 10;
-        }
-        
-        keeper.dive(targetX, 150 + (100 - targetZ));
+        // Aim for where the ball is likely going
+        const predictedX = ball.x + ball.vx * 30;
+        const predictedZ = ball.vz * 10;
+        keeper.dive(predictedX, 150 + (100 - predictedZ));
     }, 200);
 });
 
 // UI Events
 document.querySelectorAll('.diff-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentDifficulty = btn.dataset.diff;
+        chosenDifficulty = btn.dataset.level;
+        document.getElementById('game-status').innerText = chosenDifficulty.toUpperCase();
+        startScreen.classList.remove('active');
+        gameState = 'IDLE';
     });
-});
-
-startBtn.addEventListener('click', () => {
-    startScreen.classList.remove('active');
-    gameState = 'IDLE';
 });
 
 playAgainBtn.addEventListener('click', () => {
