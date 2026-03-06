@@ -1,0 +1,276 @@
+:root {
+    --primary: #ff2d2d; /* Red Player */
+    --secondary: #ffffff; /* White Goleiro */
+    --accent: #39ff14; /* Neon Green Goal */
+    --bg-dark: #0a0a0c;
+    --pitch: #1a5a1a;
+    --glass: rgba(0, 0, 0, 0.824);
+    --font-main: 'Inter', system-ui;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    max-height: 720px;
+    background-color: var(--pitch);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#stadium-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px; /* Top part for crowd */
+    background-image: url('assets/crowd.png');
+    background-size: cover;
+    background-position: bottom;
+    opacity: 0.6;
+    filter: blur(2px) grayscale(0.2);
+    z-index: 0;
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
+}
+
+/* Scoreboard */
+#scoreboard {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 80px;
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.score-team {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.team-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.score-value {
+    font-family: var(--font-heading);
+    font-size: 38px;
+    font-weight: 800;
+    color: white;
+}
+
+.score-middle {
+    text-align: center;
+}
+
+#game-status {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.shot-indicators {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.indicator.success { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.indicator.fail { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+
+/* UI Overlay */
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.overlay-card {
+    background: var(--glass);
+    padding: 50px;
+    border-radius: 40px;
+    text-align: center;
+    max-width: 450px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.overlay-card.active {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.game-title {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    line-height: 0.95;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, white, #ff7171);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -2px;
+}
+
+.game-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.main-btn {
+    background: linear-gradient(135deg, var(--primary), #ff7171);
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 15px 30px rgba(255, 45, 45, 0.3);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.main-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(255, 45, 45, 0.4);
+}
+
+.sub-btn {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.sub-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+}
+
+/* Animations */
+.goal-anim {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(57, 255, 20, 0.8), 0 0 60px rgba(57, 255, 20, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.5);
+    z-index: 30;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.goal-anim.show {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+#drag-hint {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+    font-size: 14px;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 10;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+    100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 600px) {
+    #scoreboard { width: 90%; padding: 0 20px; }
+    .game-title { font-size: 40px; }
+    .overlay-card { padding: 30px; }
+}

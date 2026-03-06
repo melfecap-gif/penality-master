@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penalty Strike 2D | Pênaltis Imersivos</title>
+    <meta name="description" content="Sinta a pressão da torcida e mostre sua precisão no Penalty Strike 2D, o melhor simulador de pênaltis para web.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Stadium Background (Crowd) -->
+        <div id="stadium-bg"></div>
+        
+        <!-- Scoreboard -->
+        <div id="scoreboard">
+            <div class="score-team">
+                <span class="team-name">PLAYER</span>
+                <span id="player-score" class="score-value">0</span>
+            </div>
+            <div class="score-middle">
+                <span id="game-status">PENALTY</span>
+                <div class="shot-indicators" id="shot-lane">
+                    <!-- Dots for the 5 shots -->
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                </div>
+            </div>
+            <div class="score-team">
+                <span id="cpu-score" class="score-value">0</span>
+                <span class="team-name">KEEPER</span>
+            </div>
+        </div>
+
+        <!-- Canvas for Game World -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- UI Overlays -->
+        <div id="ui-overlay">
+            <div id="start-screen" class="overlay-card active">
+                <h1 class="game-title">PENALTY<br>STRIKE 2D</h1>
+                <p class="game-desc">Arraste a bola para trás e para os lados para mirar. Solte para chutar!</p>
+                <button id="start-btn" class="main-btn">JOGAR AGORA</button>
+            </div>
+
+            <div id="goal-message" class="goal-anim">
+                <h2 id="msg-text">GOOOOOL!</h2>
+            </div>
+
+            <div id="game-over" class="overlay-card">
+                <h2 id="result-title">FIM DE JOGO</h2>
+                <div id="final-score">5 - 3</div>
+                <button id="restart-btn" class="main-btn">RECORDE: <span id="high-score">0</span></button>
+                <button id="play-again-btn" class="sub-btn">Jogar Novamente</button>
+            </div>
+        </div>
+
+        <!-- Instruction Help -->
+        <div id="drag-hint" class="hint-pulse">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+            <span>Arraste para mirar</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="game.js"></script>
+</body>
+</html>
